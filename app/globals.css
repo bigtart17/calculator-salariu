@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --background: #fbf6eb;
+  --foreground: #0b1324;
+  --font-body: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+  --font-heading: "Avenir Next Condensed", "Arial Narrow", "Avenir Next", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body), sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(117, 230, 218, 0.18), transparent 28%),
+    radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.14), transparent 24%),
+    linear-gradient(180deg, var(--background), #f6f8fd 46%, #ffffff 100%);
+  color: var(--foreground);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.6) transparent;
+}
+
+::selection {
+  background: rgba(245, 158, 11, 0.22);
+}
