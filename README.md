@@ -99,3 +99,4 @@ Fără `NEXT_PUBLIC_ADSENSE_CLIENT`, aplicația afișează placeholder-e premium
 ## Legal / product note
 
 Calculele sunt estimative și urmăresc o experiență clară și actualizabilă. Pentru state de plată finale sau situații speciale, validează rezultatul cu HR sau contabilitate.
+# calculator_salariu
