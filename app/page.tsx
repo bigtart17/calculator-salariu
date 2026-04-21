@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { AdSenseSlot } from "@/components/adsense-slot";
 import { SalaryCalculator } from "@/components/calculator/salary-calculator";
 import { FaqSection } from "@/components/faq-section";
-import { MobileStickyAd } from "@/components/mobile-sticky-ad";
 import { SiteHeader } from "@/components/site-header";
 import { buildInitialStateFromSearchParams } from "@/lib/calculator-state";
 import {
@@ -40,35 +38,35 @@ export default async function Home({
       <SiteHeader />
       <main className="pb-24">
         <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8 lg:pt-14">
-          <div className="overflow-hidden rounded-[40px] border border-white/70 bg-white/70 shadow-halo backdrop-blur">
+          <div className="overflow-hidden rounded-[40px] border border-border bg-surface shadow-halo backdrop-blur">
             <div className="p-6 sm:p-8 lg:p-10">
               <div className="max-w-5xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-slate-500">
-                  Updated for 2026 legislation
+                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-text-muted">
+                  Actualizat pentru legislația din 2026
                 </p>
-                <h1 className="mt-4 max-w-4xl text-5xl font-semibold tracking-tight text-ink sm:text-6xl lg:text-7xl">
+                <h1 className="mt-4 max-w-4xl text-5xl font-semibold tracking-tight text-text-primary sm:text-6xl lg:text-7xl">
                   {copy.heroTitle}
                 </h1>
-                <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600 sm:text-xl">
+                <p className="mt-6 max-w-3xl text-lg leading-8 text-text-secondary sm:text-xl">
                   {copy.heroSubtitle}
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4">
                   <a
                     href="#calculator"
-                    className="rounded-2xl bg-ink px-6 py-4 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+                    className="rounded-2xl bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-panel transition hover:-translate-y-0.5 hover:bg-primary-hover"
                   >
                     {copy.ctaPrimary}
                   </a>
                 </div>
 
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <div className="rounded-full border border-slate-200/80 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                  <div className="rounded-full border border-border bg-surface px-4 py-2 text-sm font-medium text-text-secondary shadow-sm">
                     Brut → Net instant
                   </div>
-                  <div className="rounded-full border border-slate-200/80 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                  <div className="rounded-full border border-border bg-secondary-subtle px-4 py-2 text-sm font-medium text-text-secondary shadow-sm">
                     Net → Brut clar
                   </div>
-                  <div className="rounded-full border border-cyan-200/90 bg-cyan-50 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                  <div className="rounded-full border border-border bg-accent-subtle px-4 py-2 text-sm font-medium text-text-secondary shadow-sm">
                     Cost angajator inclus
                   </div>
                 </div>
@@ -81,84 +79,79 @@ export default async function Home({
           id="calculator"
           className="mx-auto max-w-7xl scroll-mt-28 px-4 pt-14 sm:px-6 lg:px-8 lg:pt-16"
         >
-          <div className="mb-8 max-w-3xl rounded-[32px] border border-slate-200/70 bg-white/80 p-6 shadow-panel backdrop-blur sm:p-7">
+          <div className="mb-8 max-w-3xl rounded-[32px] border border-border bg-surface p-6 shadow-panel backdrop-blur sm:p-7">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">
                 Core feature
               </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
                 {copy.calculatorTitle}
               </h2>
-              <p className="mt-4 text-lg leading-8 text-slate-600">{copy.calculatorLead}</p>
+              <p className="mt-4 text-lg leading-8 text-text-secondary">{copy.calculatorLead}</p>
             </div>
           </div>
           <SalaryCalculator locale="ro" initialState={initialState} />
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
-          <AdSenseSlot label="Sub calculator" slot="calculator-below" />
-        </section>
-
         <section id="ghid" className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-20">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-            <div className="rounded-[36px] border border-slate-200/70 bg-white/90 p-6 shadow-panel backdrop-blur sm:p-8">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-                SEO content engine
+            <div className="rounded-[36px] border border-border bg-surface p-6 shadow-panel backdrop-blur sm:p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">
+                Calculator salariu 2026
               </p>
-              <p className="mt-4 text-lg leading-8 text-slate-600">
+              <p className="mt-4 text-lg leading-8 text-text-secondary">
                 {longFormRomanianContent.intro}
               </p>
               {longFormRomanianContent.sections.map((section) => (
                 <section
                   key={section.id}
                   id={section.id}
-                  className="mt-10 scroll-mt-28 border-t border-slate-100 pt-8 first:border-t-0 first:pt-0"
+                  className="mt-10 scroll-mt-28 border-t border-border pt-8 first:border-t-0 first:pt-0"
                 >
-                  <h2 className="text-3xl font-semibold tracking-tight text-ink">{section.title}</h2>
-                  <div className="mt-4 space-y-5 text-base leading-8 text-slate-600">
+                  <h2 className="text-3xl font-semibold tracking-tight text-text-primary">{section.title}</h2>
+                  <div className="mt-4 space-y-5 text-base leading-8 text-text-secondary">
                     {section.paragraphs.map((paragraph) => (
                       <p key={paragraph}>{paragraph}</p>
                     ))}
                   </div>
                 </section>
               ))}
-              <p className="mt-10 text-base leading-8 text-slate-600">
+              <p className="mt-10 text-base leading-8 text-text-secondary">
                 {longFormRomanianContent.outro}
               </p>
             </div>
 
             <div className="space-y-6 lg:sticky lg:top-28">
-              <div className="rounded-[32px] border border-slate-200/70 bg-white/92 p-6 shadow-panel">
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Lead gen
+              <div className="rounded-[32px] border border-border bg-surface p-6 shadow-panel">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">
+                  Linkuri utile
                 </p>
                 <div className="mt-4 space-y-3">
                   <a
                     href="#calculator"
-                    className="block rounded-[24px] bg-ink px-5 py-4 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+                    className="block rounded-[24px] bg-primary px-5 py-4 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:bg-primary-hover"
                   >
                     Vezi joburi mai bine plătite
                   </a>
                   <a
                     href="#calculator"
-                    className="block rounded-[24px] bg-sky-100 px-5 py-4 text-sm font-semibold text-ink transition hover:bg-sky-200"
+                    className="block rounded-[24px] bg-primary-subtle px-5 py-4 text-sm font-semibold text-text-primary transition hover:bg-background-secondary"
                   >
                     Compară salarii în IT
                   </a>
                   <a
                     href="#faq"
-                    className="block rounded-[24px] bg-amber-100 px-5 py-4 text-sm font-semibold text-ink transition hover:bg-amber-200"
+                    className="block rounded-[24px] bg-accent-subtle px-5 py-4 text-sm font-semibold text-accent-foreground transition hover:bg-warning-subtle"
                   >
                     Găsește contabil
                   </a>
                 </div>
               </div>
-              <AdSenseSlot label="În ghid" slot="content-inline" />
-              <div className="rounded-[32px] border border-slate-200/70 bg-white/92 p-6 shadow-panel">
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Trust signal
+              <div className="rounded-[32px] border border-border bg-surface p-6 shadow-panel">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">
+                  Important!
                 </p>
-                <p className="mt-4 text-sm leading-7 text-slate-600">
+                <p className="mt-4 text-sm leading-7 text-text-secondary">
                   Rezultatele au caracter informativ și sunt construite pentru claritate și estimare
                   rapidă. Pentru state de plată finale sau cazuri speciale, verifică legislația și
                   confirmă cu HR sau un specialist contabil.
@@ -170,13 +163,13 @@ export default async function Home({
 
         <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-20">
           <div className="mb-8 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-              Programmatic SEO
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">
+              Calculator salariu 2026
             </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
               Exemple populare de calcul salariu
             </h2>
-            <p className="mt-4 text-lg leading-8 text-slate-600">
+            <p className="mt-4 text-lg leading-8 text-text-secondary">
               Blocuri gata să captureze intenția long-tail pentru căutări de tip „salariu net pentru
               X lei brut”.
             </p>
@@ -188,15 +181,15 @@ export default async function Home({
                 <Link
                   key={gross}
                   href={`/salariu-net-pentru/${gross}`}
-                  className="rounded-[32px] border border-slate-200/70 bg-white/90 p-6 shadow-panel transition hover:-translate-y-1 hover:border-slate-300"
+                  className="rounded-[32px] border border-border bg-surface p-6 shadow-panel transition hover:-translate-y-1 hover:border-border-strong"
                 >
-                  <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+                  <p className="text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">
                     Exemplu
                   </p>
-                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-ink">
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-text-primary">
                     {gross.toLocaleString("ro-RO")} lei brut
                   </h3>
-                  <div className="mt-5 space-y-2 text-sm leading-7 text-slate-600">
+                  <div className="mt-5 space-y-2 text-sm leading-7 text-text-secondary">
                     <p>Net total estimat: {example.takeHomeTotal.toLocaleString("ro-RO")} lei</p>
                     <p>Cost angajator: {example.totalEmployerCost.toLocaleString("ro-RO")} lei</p>
                     <p>CAS: {example.cas.toLocaleString("ro-RO")} lei</p>
@@ -212,7 +205,6 @@ export default async function Home({
           <FaqSection />
         </section>
       </main>
-      <MobileStickyAd slot="mobile-sticky-bottom" />
     </>
   );
 }

@@ -7,6 +7,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: SITE_URL,
       changeFrequency: "weekly" as const,
       priority: 1
+    },
+    {
+      url: `${SITE_URL}/privacy-policy`,
+      changeFrequency: "yearly" as const,
+      priority: 0.3
+    },
+    {
+      url: `${SITE_URL}/cookie-policy`,
+      changeFrequency: "yearly" as const,
+      priority: 0.3
+    },
+    {
+      url: `${SITE_URL}/terms-of-service`,
+      changeFrequency: "yearly" as const,
+      priority: 0.3
     }
   ];
 

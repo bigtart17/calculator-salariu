@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import { ConsentProvider } from "@/components/cookies/consent-provider";
+import { SiteFooter } from "@/components/site-footer";
 import { SITE_URL } from "@/lib/content";
+import { GOOGLE_CONSENT_DEFAULT_SCRIPT } from "@/lib/consent/googleConsent";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -39,21 +42,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
-
   return (
     <html lang="ro" suppressHydrationWarning>
       <body className="font-sans antialiased">
-        {adsenseClient ? (
-          <Script
-            id="adsense"
-            async
-            strategy="afterInteractive"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
-            crossOrigin="anonymous"
-          />
-        ) : null}
-        {children}
+        <Script
+          id="google-consent-default"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: GOOGLE_CONSENT_DEFAULT_SCRIPT }}
+        />
+        <ConsentProvider>
+          {children}
+          <SiteFooter />
+        </ConsentProvider>
       </body>
     </html>
   );

@@ -4,8 +4,40 @@
 
 :root {
   color-scheme: light;
-  --background: #fbf6eb;
-  --foreground: #0b1324;
+  --color-primary: #174a47;
+  --color-primary-hover: #113a38;
+  --color-primary-subtle: #e7f2ef;
+  --color-primary-panel: #245a56;
+  --color-primary-panel-border: #356c67;
+  --color-primary-muted: #d8e4de;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #405852;
+  --color-secondary-subtle: #eef5f1;
+  --color-secondary-foreground: #ffffff;
+  --color-accent: #b7791f;
+  --color-accent-hover: #936014;
+  --color-accent-subtle: #fff3d8;
+  --color-accent-foreground: #102a28;
+  --color-background: #f6f2ea;
+  --color-background-secondary: #eef5f1;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #fbfcf9;
+  --color-surface-input: #f7faf7;
+  --color-border: #d8e4de;
+  --color-border-strong: #adc4ba;
+  --color-text-primary: #102a28;
+  --color-text-secondary: #425a55;
+  --color-text-muted: #6b7d77;
+  --color-success: #1f7a5a;
+  --color-success-subtle: #e6f4ee;
+  --color-warning: #a76300;
+  --color-warning-subtle: #fff4d9;
+  --color-error: #b23b3b;
+  --color-error-subtle: #fce8e8;
+  --color-ad-surface: #f8faf8;
+  --color-ad-border: #d8e4de;
+  --background: var(--color-background);
+  --foreground: var(--color-text-primary);
   --font-body: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
   --font-heading: "Avenir Next Condensed", "Arial Narrow", "Avenir Next", sans-serif;
 }
@@ -17,10 +49,7 @@ html {
 body {
   min-height: 100vh;
   font-family: var(--font-body), sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(117, 230, 218, 0.18), transparent 28%),
-    radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.14), transparent 24%),
-    linear-gradient(180deg, var(--background), #f6f8fd 46%, #ffffff 100%);
+  background: var(--color-background);
   color: var(--foreground);
 }
 
@@ -39,5 +68,27 @@ h6 {
 }
 
 ::selection {
-  background: rgba(245, 158, 11, 0.22);
+  background: var(--color-primary-subtle);
+}
+
+.calculator-select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23102A28' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  background-size: 1.15rem;
+  line-height: 1.45;
+  min-height: 3.75rem;
+  padding-right: 3rem;
+}
+
+.calculator-number-input {
+  -moz-appearance: textfield;
+}
+
+.calculator-number-input::-webkit-inner-spin-button,
+.calculator-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

@@ -4,8 +4,8 @@ export function FaqSection() {
   return (
     <section id="faq" className="scroll-mt-28">
       <div className="mb-8 max-w-3xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">FAQ</p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-text-muted">FAQ</p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
           Întrebări frecvente despre salariul net și brut
         </h2>
       </div>
@@ -13,12 +13,12 @@ export function FaqSection() {
         {faqItems.map((item) => (
           <details
             key={item.question}
-            className="group rounded-[28px] border border-slate-200/70 bg-white/85 p-6 shadow-panel backdrop-blur"
+            className="group rounded-[28px] border border-border bg-surface p-6 shadow-panel backdrop-blur"
           >
-            <summary className="cursor-pointer list-none text-lg font-semibold text-ink">
+            <summary className="cursor-pointer list-none text-lg font-semibold text-text-primary">
               {item.question}
             </summary>
-            <p className="mt-4 leading-7 text-slate-600">{item.answer}</p>
+            <p className="mt-4 leading-7 text-text-secondary">{item.answer}</p>
           </details>
         ))}
       </div>

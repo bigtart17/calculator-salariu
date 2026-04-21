@@ -9,12 +9,16 @@ import { SalaryBreakdown, SalaryInput, SalarySector } from "@/lib/tax-engine/typ
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 const round2 = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
 const roundUpToTen = (value: number) => Math.ceil(value / 10) * 10;
+const isValidSector = (sector: SalaryInput["sector"]) =>
+  Object.prototype.hasOwnProperty.call(SECTOR_LABELS, sector);
+const isValidTaxPeriod = (taxPeriodId: SalaryInput["taxPeriodId"]) =>
+  Object.prototype.hasOwnProperty.call(TAX_PERIODS, taxPeriodId);
 
 const sanitizeInput = (input: SalaryInput): SalaryInput => {
   return {
     ...input,
-    amount: Math.max(0, input.amount || 0),
-    bonus: Math.max(0, input.bonus || 0),
+    amount: Number.isFinite(input.amount) ? Math.max(0, input.amount) : 0,
+    bonus: Number.isFinite(input.bonus) ? Math.max(0, input.bonus) : 0,
     dependents: clamp(Math.floor(input.dependents || 0), 0, 4)
   };
 };
@@ -56,7 +60,11 @@ function getSectorRates(sector: SalarySector, isBaseJob: boolean) {
 }
 
 function calculateGrossBreakdown(grossSalary: number, rawInput: SalaryInput): SalaryBreakdown {
-  const input = sanitizeInput(rawInput);
+  const input = sanitizeInput({
+    ...rawInput,
+    sector: isValidSector(rawInput.sector) ? rawInput.sector : "standard",
+    taxPeriodId: isValidTaxPeriod(rawInput.taxPeriodId) ? rawInput.taxPeriodId : "2026-h1"
+  });
   const period = TAX_PERIODS[input.taxPeriodId];
   const rates = getSectorRates(input.sector, input.isBaseJob);
   const employmentGross = round2(grossSalary + input.bonus);

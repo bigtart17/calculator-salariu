@@ -7,6 +7,21 @@ function parseBoolean(value: string | null) {
   return value === "1" || value === "true";
 }
 
+function parseNumber(value: string | undefined, fallback: number) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
+}
+
+function parseDependents(value: string | undefined, fallback: number) {
+  const parsed = Number(value);
+
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  return Math.min(Math.max(Math.floor(parsed), 0), 4);
+}
+
 export function buildInitialStateFromSearchParams(
   searchParams: Record<string, string | string[] | undefined>,
   fallback: SalaryInput
@@ -22,9 +37,9 @@ export function buildInitialStateFromSearchParams(
   return {
     ...fallback,
     mode: getSingle("mode") === "netToGross" ? "netToGross" : fallback.mode,
-    amount: Number(getSingle("amount") || fallback.amount),
-    bonus: Number(getSingle("bonus") || fallback.bonus),
-    dependents: Number(getSingle("dependents") || fallback.dependents),
+    amount: parseNumber(getSingle("amount"), fallback.amount),
+    bonus: parseNumber(getSingle("bonus"), fallback.bonus),
+    dependents: parseDependents(getSingle("dependents"), fallback.dependents),
     sector: VALID_SECTORS.includes(sectorValue as SalaryInput["sector"])
       ? (sectorValue as SalaryInput["sector"])
       : fallback.sector,

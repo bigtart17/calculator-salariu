@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
       "Calculator salariu net ↔ brut România 2026 cu cost angajator și deduceri personale.",
     start_url: "/",
     display: "standalone",
-    background_color: "#fbf6eb",
-    theme_color: "#0b1324"
+    background_color: "#f6f2ea",
+    theme_color: "#174a47"
   };
 }
