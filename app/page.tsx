@@ -90,7 +90,7 @@ export default async function Home({
               <p className="mt-4 text-lg leading-8 text-text-secondary">{copy.calculatorLead}</p>
             </div>
           </div>
-          <SalaryCalculator locale="ro" initialState={initialState} />
+          <SalaryCalculator initialState={initialState} />
         </section>
 
         <section id="ghid" className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-20">

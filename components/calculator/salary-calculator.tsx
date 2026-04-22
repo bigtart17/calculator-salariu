@@ -6,22 +6,19 @@ import { TAX_PERIODS } from "@/lib/tax-engine/config";
 import { SalaryInput } from "@/lib/tax-engine/types";
 import { TaxTooltip } from "@/components/calculator/tax-tooltip";
 
-type Locale = "ro" | "en";
-
 interface SalaryCalculatorProps {
-  locale: Locale;
   initialState: SalaryInput;
 }
 
-const formatCurrency = (value: number, locale: Locale = "ro") =>
-  new Intl.NumberFormat(locale === "ro" ? "ro-RO" : "en-US", {
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("ro-RO", {
     style: "currency",
     currency: "RON",
     maximumFractionDigits: 0
   }).format(value);
 
-const formatDetailedCurrency = (value: number, locale: Locale = "ro") =>
-  new Intl.NumberFormat(locale === "ro" ? "ro-RO" : "en-US", {
+const formatDetailedCurrency = (value: number) =>
+  new Intl.NumberFormat("ro-RO", {
     style: "currency",
     currency: "RON",
     maximumFractionDigits: 2
@@ -61,7 +58,7 @@ function safelyReplaceUrl(nextUrl: string) {
   }
 }
 
-export function SalaryCalculator({ locale, initialState }: SalaryCalculatorProps) {
+export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
   const [state, setState] = useState<SalaryInput>(initialState);
   const [copied, setCopied] = useState(false);
 
@@ -93,18 +90,20 @@ export function SalaryCalculator({ locale, initialState }: SalaryCalculatorProps
   const handleCopy = async () => {
     const summary =
       state.mode === "grossToNet"
-        ? `Brut: ${formatDetailedCurrency(state.amount, locale)} | Net estimat: ${formatDetailedCurrency(
-            result.takeHomeTotal,
-            locale
-          )} | Cost angajator: ${formatDetailedCurrency(result.totalEmployerCost, locale)}`
-        : `Net dorit: ${formatDetailedCurrency(state.amount, locale)} | Brut necesar: ${formatDetailedCurrency(
-            result.grossSalary,
-            locale
-          )} | Cost angajator: ${formatDetailedCurrency(result.totalEmployerCost, locale)}`;
+        ? `Brut: ${formatDetailedCurrency(state.amount)} | Net estimat: ${formatDetailedCurrency(
+            result.takeHomeTotal
+          )} | Cost angajator: ${formatDetailedCurrency(result.totalEmployerCost)}`
+        : `Net dorit: ${formatDetailedCurrency(state.amount)} | Brut necesar: ${formatDetailedCurrency(
+            result.grossSalary
+          )} | Cost angajator: ${formatDetailedCurrency(result.totalEmployerCost)}`;
 
-    await navigator.clipboard.writeText(summary);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
+    try {
+      await navigator.clipboard.writeText(summary);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // Clipboard access can be blocked by browser permissions or insecure contexts.
+    }
   };
 
   const handleShare = async () => {
@@ -112,18 +111,22 @@ export function SalaryCalculator({ locale, initialState }: SalaryCalculatorProps
     safelyReplaceUrl(nextUrl);
     const url = nextUrl ? `${window.location.origin}${nextUrl}` : window.location.href;
 
-    if (navigator.share) {
-      await navigator.share({
-        title: "Calculator salariu net",
-        text: "Vezi simularea salarială",
-        url
-      });
-      return;
-    }
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Calculator salariu net",
+          text: "Vezi simularea salarială",
+          url
+        });
+        return;
+      }
 
-    await navigator.clipboard.writeText(url);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // Sharing can be cancelled by the user or unavailable in some browsers.
+    }
   };
 
   const taxRows = [
@@ -314,14 +317,14 @@ export function SalaryCalculator({ locale, initialState }: SalaryCalculatorProps
             <div>
               <p className="text-xs uppercase tracking-[0.24em] text-primary-muted">Rezultat principal</p>
               <h3 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
-                {formatCurrency(primaryResultValue, locale)}
+                {formatCurrency(primaryResultValue)}
               </h3>
               <p className="mt-2 text-sm font-medium text-primary-muted">
                 {primaryResultDescription}
               </p>
               <p className="mt-1 text-sm text-primary-muted">{result.periodLabel}</p>
               <div className="mt-4 inline-flex rounded-full bg-primary-panel px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary-muted">
-                Taxe estimate: {formatCurrency(result.employeeTaxesTotal, locale)}
+                Taxe estimate: {formatCurrency(result.employeeTaxesTotal)}
               </div>
             </div>
             <div className="rounded-2xl bg-primary-panel px-3 py-2 text-right text-sm shadow-sm">
@@ -333,24 +336,24 @@ export function SalaryCalculator({ locale, initialState }: SalaryCalculatorProps
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-[24px] border border-primary-border bg-primary-panel p-4 backdrop-blur">
               <p className="text-xs uppercase tracking-[0.24em] text-primary-muted">Net lunar</p>
-              <p className="mt-2 text-2xl font-semibold">{formatCurrency(result.netSalary, locale)}</p>
+              <p className="mt-2 text-2xl font-semibold">{formatCurrency(result.netSalary)}</p>
             </div>
             <div className="rounded-[24px] border border-primary-border bg-primary-panel p-4 backdrop-blur">
               <p className="text-xs uppercase tracking-[0.24em] text-primary-muted">Cost angajator</p>
               <p className="mt-2 text-2xl font-semibold">
-                {formatCurrency(result.totalEmployerCost, locale)}
+                {formatCurrency(result.totalEmployerCost)}
               </p>
             </div>
             <div className="rounded-[24px] border border-primary-border bg-primary-panel p-4 backdrop-blur">
               <p className="text-xs uppercase tracking-[0.24em] text-primary-muted">Net anual</p>
               <p className="mt-2 text-2xl font-semibold">
-                {formatCurrency(result.yearlyNetSalary, locale)}
+                {formatCurrency(result.yearlyNetSalary)}
               </p>
             </div>
             <div className="rounded-[24px] border border-primary-border bg-primary-panel p-4 backdrop-blur">
               <p className="text-xs uppercase tracking-[0.24em] text-primary-muted">Cost anual firmă</p>
               <p className="mt-2 text-2xl font-semibold">
-                {formatCurrency(result.yearlyEmployerCost, locale)}
+                {formatCurrency(result.yearlyEmployerCost)}
               </p>
             </div>
           </div>
@@ -389,14 +392,14 @@ export function SalaryCalculator({ locale, initialState }: SalaryCalculatorProps
                   <TaxTooltip label={row.label} content={row.info} />
                 </div>
                 <div className="text-base font-semibold text-text-primary">
-                  {formatDetailedCurrency(row.value, locale)}
+                  {formatDetailedCurrency(row.value)}
                 </div>
               </div>
             ))}
             <div className="flex items-center justify-between gap-4 rounded-[22px] bg-accent-subtle px-4 py-3">
               <div className="text-sm font-medium text-text-secondary">Deducere personală</div>
               <div className="text-base font-semibold text-text-primary">
-                {formatDetailedCurrency(result.personalDeduction, locale)}
+                {formatDetailedCurrency(result.personalDeduction)}
               </div>
             </div>
           </div>
@@ -423,39 +426,39 @@ export function SalaryCalculator({ locale, initialState }: SalaryCalculatorProps
             <div className="rounded-[24px] border border-border bg-surface-input p-4">
               <div className="text-xs uppercase tracking-[0.24em] text-text-muted">Brut</div>
               <div className="mt-2 text-lg font-semibold text-text-primary">
-                {formatCurrency(result.grossSalary, locale)}
+                {formatCurrency(result.grossSalary)}
               </div>
             </div>
             <div className="rounded-[24px] border border-border-strong bg-success-subtle p-4">
               <div className="text-xs uppercase tracking-[0.24em] text-success">Net</div>
               <div className="mt-2 text-lg font-semibold text-text-primary">
-                {formatCurrency(result.takeHomeTotal, locale)}
+                {formatCurrency(result.takeHomeTotal)}
               </div>
             </div>
             <div className="rounded-[24px] border border-border bg-surface-input p-4">
               <div className="text-xs uppercase tracking-[0.24em] text-text-muted">Cost firmă</div>
               <div className="mt-2 text-lg font-semibold text-text-primary">
-                {formatCurrency(result.totalEmployerCost, locale)}
+                {formatCurrency(result.totalEmployerCost)}
               </div>
             </div>
           </div>
         </div>
       </aside>
 
-      <div className="fixed inset-x-4 bottom-[108px] z-50 rounded-[24px] border border-border bg-surface p-4 shadow-halo backdrop-blur lg:hidden">
+      <div className="pointer-events-none fixed inset-x-4 bottom-[calc(env(safe-area-inset-bottom)+16px)] z-50 rounded-[24px] border border-border bg-surface p-4 shadow-halo backdrop-blur lg:hidden">
         <div className="flex items-center justify-between gap-4">
           <div>
             <div className="text-xs uppercase tracking-[0.24em] text-text-muted">
               {primaryResultMobileLabel}
             </div>
             <div className="mt-1 text-xl font-semibold text-text-primary">
-              {formatCurrency(primaryResultValue, locale)}
+              {formatCurrency(primaryResultValue)}
             </div>
           </div>
           <div className="text-right">
             <div className="text-xs uppercase tracking-[0.24em] text-text-muted">Cost angajator</div>
             <div className="mt-1 text-base font-semibold text-text-primary">
-              {formatCurrency(result.totalEmployerCost, locale)}
+              {formatCurrency(result.totalEmployerCost)}
             </div>
           </div>
         </div>
