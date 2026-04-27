@@ -186,7 +186,13 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
                   : "border-border bg-primary-subtle text-text-secondary"
               }`}
             >
-              <div className="text-xs uppercase tracking-[0.22em] opacity-70">Mode</div>
+              <div
+                className={`text-xs uppercase tracking-[0.22em] ${
+                  state.mode === "grossToNet" ? "text-primary-muted" : "text-text-muted"
+                }`}
+              >
+                Mode
+              </div>
               <div className="mt-2 text-lg font-semibold">Brut → Net</div>
             </button>
             <button
@@ -198,7 +204,13 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
                   : "border-border bg-primary-subtle text-text-secondary"
               }`}
             >
-              <div className="text-xs uppercase tracking-[0.22em] opacity-70">Mode</div>
+              <div
+                className={`text-xs uppercase tracking-[0.22em] ${
+                  state.mode === "netToGross" ? "text-primary-muted" : "text-text-muted"
+                }`}
+              >
+                Mode
+              </div>
               <div className="mt-2 text-lg font-semibold">Net → Brut</div>
             </button>
           </div>
