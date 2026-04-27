@@ -61,7 +61,7 @@ function safelyReplaceUrl(nextUrl: string) {
 export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
   const [state, setState] = useState<SalaryInput>(initialState);
   const [copied, setCopied] = useState(false);
-  const inputIdBase = useId();
+  const inputIdBase = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const amountInputId = `${inputIdBase}-amount`;
   const amountRangeId = `${inputIdBase}-amount-range`;
   const bonusInputId = `${inputIdBase}-bonus`;
@@ -260,6 +260,8 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
               </label>
               <select
                 id={dependentsSelectId}
+                name="dependents"
+                aria-label="Persoane în întreținere"
                 value={state.dependents}
                 onChange={(event) => updateState("dependents", Number(event.target.value))}
                 className="calculator-select w-full rounded-[22px] border border-border bg-surface-input px-4 py-3 text-lg font-medium text-text-primary outline-none transition focus:border-primary focus:bg-surface"
@@ -277,6 +279,8 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
               </label>
               <select
                 id={sectorSelectId}
+                name="sector"
+                aria-label="Sector fiscal"
                 value={state.sector}
                 onChange={(event) =>
                   updateState("sector", event.target.value as SalaryInput["sector"])
@@ -295,6 +299,8 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
               </label>
               <select
                 id={periodSelectId}
+                name="taxPeriodId"
+                aria-label="Perioadă fiscală"
                 value={state.taxPeriodId}
                 onChange={(event) =>
                   updateState("taxPeriodId", event.target.value as SalaryInput["taxPeriodId"])
