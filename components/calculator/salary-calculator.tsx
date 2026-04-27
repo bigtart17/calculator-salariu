@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { calculateSalary } from "@/lib/tax-engine/calculator";
 import { TAX_PERIODS } from "@/lib/tax-engine/config";
 import { SalaryInput } from "@/lib/tax-engine/types";
@@ -61,6 +61,15 @@ function safelyReplaceUrl(nextUrl: string) {
 export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
   const [state, setState] = useState<SalaryInput>(initialState);
   const [copied, setCopied] = useState(false);
+  const inputIdBase = useId();
+  const amountInputId = `${inputIdBase}-amount`;
+  const amountRangeId = `${inputIdBase}-amount-range`;
+  const bonusInputId = `${inputIdBase}-bonus`;
+  const dependentsSelectId = `${inputIdBase}-dependents`;
+  const sectorSelectId = `${inputIdBase}-sector`;
+  const periodSelectId = `${inputIdBase}-period`;
+  const isBaseJobCheckboxId = `${inputIdBase}-base-job`;
+  const minimumReliefCheckboxId = `${inputIdBase}-minimum-relief`;
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -195,11 +204,12 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
           </div>
 
           <div className="rounded-[28px] border border-border bg-surface-input p-5">
-            <label className="mb-2 block text-sm font-medium text-text-secondary">
+            <label htmlFor={amountInputId} className="mb-2 block text-sm font-medium text-text-secondary">
               {state.mode === "grossToNet" ? "Brut lunar" : "Net lunar dorit"}
             </label>
             <div className="flex items-center gap-3 rounded-[22px] border border-border bg-surface px-4 py-4">
               <input
+                id={amountInputId}
                 type="number"
                 min={0}
                 value={state.amount}
@@ -210,7 +220,11 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
                 RON
               </span>
             </div>
+            <label htmlFor={amountRangeId} className="sr-only">
+              Ajustează {state.mode === "grossToNet" ? "salariul brut lunar" : "salariul net lunar dorit"}
+            </label>
             <input
+              id={amountRangeId}
               type="range"
               min={1000}
               max={30000}
@@ -228,8 +242,11 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="mb-2 block text-sm font-medium text-text-secondary">Bonus lunar</label>
+              <label htmlFor={bonusInputId} className="mb-2 block text-sm font-medium text-text-secondary">
+                Bonus lunar
+              </label>
               <input
+                id={bonusInputId}
                 type="number"
                 min={0}
                 value={state.bonus}
@@ -238,10 +255,11 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
               />
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-text-secondary">
+              <label htmlFor={dependentsSelectId} className="mb-2 block text-sm font-medium text-text-secondary">
                 Persoane în întreținere
               </label>
               <select
+                id={dependentsSelectId}
                 value={state.dependents}
                 onChange={(event) => updateState("dependents", Number(event.target.value))}
                 className="calculator-select w-full rounded-[22px] border border-border bg-surface-input px-4 py-3 text-lg font-medium text-text-primary outline-none transition focus:border-primary focus:bg-surface"
@@ -254,8 +272,11 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
               </select>
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-text-secondary">Sector fiscal</label>
+              <label htmlFor={sectorSelectId} className="mb-2 block text-sm font-medium text-text-secondary">
+                Sector fiscal
+              </label>
               <select
+                id={sectorSelectId}
                 value={state.sector}
                 onChange={(event) =>
                   updateState("sector", event.target.value as SalaryInput["sector"])
@@ -269,8 +290,11 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
               </select>
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-text-secondary">Perioadă</label>
+              <label htmlFor={periodSelectId} className="mb-2 block text-sm font-medium text-text-secondary">
+                Perioadă
+              </label>
               <select
+                id={periodSelectId}
                 value={state.taxPeriodId}
                 onChange={(event) =>
                   updateState("taxPeriodId", event.target.value as SalaryInput["taxPeriodId"])
@@ -287,20 +311,28 @@ export function SalaryCalculator({ initialState }: SalaryCalculatorProps) {
           </div>
 
           <div className="grid gap-3 rounded-[28px] border border-border bg-surface-input p-5">
-            <label className="flex items-center justify-between gap-4 rounded-[20px] bg-surface px-4 py-3">
+            <label
+              htmlFor={isBaseJobCheckboxId}
+              className="flex items-center justify-between gap-4 rounded-[20px] bg-surface px-4 py-3"
+            >
               <span className="text-sm font-medium text-text-secondary">Funcție de bază</span>
               <input
+                id={isBaseJobCheckboxId}
                 type="checkbox"
                 checked={state.isBaseJob}
                 onChange={(event) => updateState("isBaseJob", event.target.checked)}
                 className="h-5 w-5 rounded border-border-strong text-primary focus:ring-primary"
               />
             </label>
-            <label className="flex items-center justify-between gap-4 rounded-[20px] bg-surface px-4 py-3">
+            <label
+              htmlFor={minimumReliefCheckboxId}
+              className="flex items-center justify-between gap-4 rounded-[20px] bg-surface px-4 py-3"
+            >
               <span className="text-sm font-medium text-text-secondary">
                 Aplică facilitatea pentru salariul minim
               </span>
               <input
+                id={minimumReliefCheckboxId}
                 type="checkbox"
                 checked={state.applyMinimumWageRelief}
                 onChange={(event) => updateState("applyMinimumWageRelief", event.target.checked)}
