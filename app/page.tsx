@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SalaryCalculator } from "@/components/calculator/salary-calculator";
 import { FaqSection } from "@/components/faq-section";
 import { SiteHeader } from "@/components/site-header";
 import { buildInitialStateFromSearchParams } from "@/lib/calculator-state";
 import {
+  SITE_URL,
   buildSalaryExample,
   defaultCalculatorState,
   getPageCopy,
@@ -13,6 +15,36 @@ import {
 import { buildFaqSchema, buildWebAppSchema } from "@/lib/seo";
 
 type SearchParams = Record<string, string | string[] | undefined>;
+
+function hasAnySearchParam(searchParams: SearchParams) {
+  return Object.values(searchParams).some((value) =>
+    Array.isArray(value) ? value.some(Boolean) : Boolean(value)
+  );
+}
+
+export async function generateMetadata({
+  searchParams
+}: {
+  searchParams: Promise<SearchParams>;
+}): Promise<Metadata> {
+  const resolvedSearchParams = await searchParams;
+  const isShareableStateUrl = hasAnySearchParam(resolvedSearchParams);
+
+  return {
+    alternates: {
+      canonical: SITE_URL
+    },
+    robots: isShareableStateUrl
+      ? {
+          index: false,
+          follow: true
+        }
+      : {
+          index: true,
+          follow: true
+        }
+  };
+}
 
 export default async function Home({
   searchParams
